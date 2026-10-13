@@ -7,3 +7,4 @@ obj/
 设置.json
 历史记录.jsonl
 错误日志.txt
+dist/

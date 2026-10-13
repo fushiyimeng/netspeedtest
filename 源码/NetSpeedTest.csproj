@@ -11,7 +11,7 @@
     <AssemblyName>NetSpeedTest</AssemblyName>
     <RootNamespace>NetSpeedTest</RootNamespace>
     <Product>网速测试</Product>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
 
     <!-- 发布属性：这三个一起决定了产物的体积，别随手改 -->
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -29,7 +29,9 @@
   <!-- 发布完把成品复制成中文名、放到工具根目录。
        放在 csproj 里而不是 .bat 里是有意的：.bat 必须纯 ASCII（cmd 按 OEM 代码页
        解析批处理，混进非 ASCII 会解析错位），所以中文名只在 csproj 里出现。 -->
-  <Target Name="CopyExeForUser" AfterTargets="Publish">
+  <!-- 打免装 .NET 的完整版时加 -p:SkipExeCopy=true，
+       否则会把工具根目录那个日常用的精简版覆盖成一两百 MB 的分发版 -->
+  <Target Name="CopyExeForUser" AfterTargets="Publish" Condition="'$(SkipExeCopy)' != 'true'">
     <Copy SourceFiles="$(PublishDir)NetSpeedTest.exe"
           DestinationFiles="$(MSBuildProjectDirectory)\..\网速测试.exe" />
     <Message Importance="high" Text="成品：$(MSBuildProjectDirectory)\..\网速测试.exe" />
