@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+
+    <AssemblyName>NetSpeedTest</AssemblyName>
+    <RootNamespace>NetSpeedTest</RootNamespace>
+    <Product>网速测试</Product>
+    <Version>1.0.0</Version>
+
+    <!-- 发布属性：这三个一起决定了产物的体积，别随手改 -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <!-- ★ PublishSingleFile 在 publish 时会隐含 SelfContained=true，
+         不显式写 false 就会得到 70~150MB 的产物 -->
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- ★ UseWindowsForms + PublishTrimmed=true 是编译期硬错误，不是警告 -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <DebugType>none</DebugType>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <!-- 发布完把成品复制成中文名、放到工具根目录。
+       放在 csproj 里而不是 .bat 里是有意的：.bat 必须纯 ASCII（cmd 按 OEM 代码页
+       解析批处理，混进非 ASCII 会解析错位），所以中文名只在 csproj 里出现。 -->
+  <Target Name="CopyExeForUser" AfterTargets="Publish">
+    <Copy SourceFiles="$(PublishDir)NetSpeedTest.exe"
+          DestinationFiles="$(MSBuildProjectDirectory)\..\网速测试.exe" />
+    <Message Importance="high" Text="成品：$(MSBuildProjectDirectory)\..\网速测试.exe" />
+  </Target>
+
+</Project>
